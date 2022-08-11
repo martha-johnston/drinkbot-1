@@ -1,0 +1,127 @@
+{
+  "components": [
+    {
+      "attributes": {
+        "i2cs": [
+          {
+            "bus": "1",
+            "name": "bus1"
+          }
+        ]
+      },
+      "depends_on": [],
+      "model": "pi",
+      "name": "local",
+      "type": "board"
+    },
+    {
+      "attributes": {
+        "board_name": "local",
+        "i2c_address": 111,
+        "i2c_name": "bus1"
+      },
+      "depends_on": [
+        "local"
+      ],
+      "model": "pca9685",
+      "name": "hat",
+      "type": "board"
+    },
+    {
+      "attributes": {
+        "board": "hat",
+        "dir_flip": true,
+        "pins": {
+          "a": "11",
+          "b": "12",
+          "dir": "",
+          "pwm": "13"
+        }
+      },
+      "depends_on": [
+        "local",
+        "hat"
+      ],
+      "model": "gpio",
+      "name": "motor",
+      "type": "motor"
+    },
+    {
+      "attributes": {
+        "auto_reconnect": true,
+        "dev_file": ""
+      },
+      "depends_on": [],
+      "model": "gamepad",
+      "name": "controller",
+      "type": "input_controller"
+    },
+    {
+      "attributes": {
+        "board": "hat",
+        "pins": {
+          "a": "9",
+          "b": "10",
+          "dir": "",
+          "pwm": "8"
+        }
+      },
+      "depends_on": [
+        "local",
+        "hat"
+      ],
+      "model": "gpio",
+      "name": "left",
+      "type": "motor"
+    },
+    {
+      "attributes": {
+        "board": "hat",
+        "pins": {
+          "a": "5",
+          "b": "6",
+          "dir": "",
+          "pwm": "7"
+        }
+      },
+      "depends_on": [
+        "local",
+        "hat"
+      ],
+      "model": "gpio",
+      "name": "right",
+      "type": "motor"
+    },
+    {
+      "attributes": {
+        "left": [
+          "left"
+        ],
+        "right": [
+          "right"
+        ],
+        "wheel_circumference_mm": 201,
+        "width_mm": 249
+      },
+      "depends_on": [
+        "local",
+        "hat",
+        "left",
+        "right"
+      ],
+      "model": "wheeled",
+      "name": "base",
+      "type": "base"
+    }
+  ],
+  "services": [
+    {
+      "attributes": {
+        "base": "base",
+        "input_controller": "controller"
+      },
+      "name": "controller-service",
+      "type": "base_remote_control"
+    }
+  ]
+}
