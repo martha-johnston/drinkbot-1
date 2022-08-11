@@ -41,8 +41,6 @@ async def client():
         # check camera for detections
         detections = await vis.get_detections_from_camera("cam", "detector_color")
 
-        # return
-
         # found no detections
         if len(detections) == 0:
             detections = await find_target(vis, wheels, detections)
@@ -67,8 +65,6 @@ async def client():
 
 async def move_to_target(vis, wheels, detections):
     x_center = (detections[0].x_max + detections[0].x_min)/2
-    print("x center: ")
-    print(x_center)
     linear = Vector3(x = 0, y = 0.5, z = 0)
     angular = angular_zero
     while 1:
@@ -81,14 +77,13 @@ async def move_to_target(vis, wheels, detections):
         await wheels.set_power(linear, angular)
 
         detections = await vis.get_detections_from_camera("cam", "detector_color")
+        print(len(detections))
 
-        if len(detections) == 0:
+        if len(detections) > 10:
             await wheels.stop()
             break
 
         x_center = (detections[0].x_max + detections[0].x_min)/2
-        print("x center: ")
-        print(x_center)
         
     print("in range for pick up")
     await wheels.stop()
@@ -117,37 +112,7 @@ async def find_target(vis, wheels, detections):
         
     print("found object")
     return detections
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    return
 
-    motor = Motor.from_robot(robot, "motor")
-    await motor.set_power(0.35)
-    await asyncio.sleep(4.5)
-    await motor.set_power(0)
-    await asyncio.sleep(2)
-    await motor.set_power(-0.35)
-    await asyncio.sleep(4.5)
-    await motor.set_power(0)
-
-
-    await robot.close()
-
-# async def get_cup(detections):
-#     cup = None
-#     for d in detections:
-#         if (d.class_name == "Cup"):
-#             print(d)
-#             cup = d
-#             return cup
-#     return cup
 
 if __name__ == '__main__':
     asyncio.run(client())
